@@ -1,0 +1,23 @@
+FROM flyinghorse0510/qemu-gem5-builder:latest as builder
+
+# Specify threads number used for build (default to use all threads)
+ARG num_threads=''
+
+
+# Copy QEMU source code
+WORKDIR /starfive/code
+ARG qemu_code_path="./qemu"
+COPY ${qemu_code_path} qemu
+RUN mkdir -p qemu/build
+
+# Build qemu-riscv64 linux user space emulator
+WORKDIR /starfive/code/qemu/build
+RUN ../configure --target-list=riscv64-linux-user --static --disable-tools
+RUN make -j ${num_threads}
+
+
+FROM ubuntu:latest
+
+
+
+
