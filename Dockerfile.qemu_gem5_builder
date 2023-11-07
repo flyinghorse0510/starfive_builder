@@ -12,7 +12,7 @@ ENV GEM5_DEPS="build-essential git m4 scons zlib1g zlib1g-dev libprotobuf-dev \
     git git-lfs libprotobuf-dev protobuf-compiler libgoogle-perftools-dev libboost-all-dev \ 
     python3-pip python3-pybind11 scons "
 
-ENV SYS_UTILS="git git-lfs python3 python3-dev python-is-python3 tmux curl vim nano openssh-server"
+ENV SYS_UTILS="git git-lfs python3 python3-dev python-is-python3 tmux curl vim nano openssh-server rsync"
 
 # Install system utilities and dependencies for building QEMU, gem5
 RUN apt update && apt upgrade -y && apt install -y ${QEMU_DEPS} && apt install -y ${GEM5_DEPS} && apt install -y ${SYS_UTILS} 

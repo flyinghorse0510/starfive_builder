@@ -1,0 +1,21 @@
+# Specify script directory
+ARG script_path="./scripts"
+
+FROM flyinghorse0510/starfive-ubuntu:22.04
+
+ARG script_path
+
+ENV BUILD_DEPS="cmake build-essential gcc g++ make gettext"
+ENV SYS_UTILS="git git-lfs python3 python3-dev python-is-python3 tmux curl vim nano openssh-server rsync"
+
+# Install system utilities and dependencies for building PARSEC3
+RUN apt update && apt upgrade -y && apt install -y ${SYS_UTILS} && apt install -y ${BUILD_DEPS}
+
+# Add parsec3 build helper script
+COPY ${script_path}/build_parsec3.sh /usr/bin/build_parsec3
+
+# Grant permission and create parsec3 source mount point
+RUN chmod +x /usr/bin/build_parsec3 && mkdir -p /parsec3
+
+# Provide entrypoint to build parsec3 automatically
+ENTRYPOINT build_parsec3
