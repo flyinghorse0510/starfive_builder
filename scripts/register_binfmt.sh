@@ -71,4 +71,4 @@ if [ "${1}" = "--delete" ]; then
     exit 0
 fi
 
-exec qemu-binfmt-conf-riscv64 --qemu-suffix "-static" --preserve-argv0 yes --qemu-path "${QEMU_BIN_DIR}" $@
+exec qemu-binfmt-conf-riscv64 --qemu-suffix "-static" --preserve-argv0 yes --persistent yes --qemu-path "${QEMU_BIN_DIR}" $@
