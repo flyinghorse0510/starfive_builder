@@ -49,4 +49,4 @@ if [ "${1}" = "--delete" ]; then
     find /proc/sys/fs/binfmt_misc -type f -name 'qemu-*' -exec sh -c 'echo -1 > {}' \;
 fi
 
-exec /qemu-binfmt-conf.sh --qemu-suffix "-static" --qemu-path "${QEMU_BIN_DIR}" $@
+exec qemu-binfmt-conf-riscv64 --qemu-suffix "-static" --preserve-argv0 yes --qemu-path "${QEMU_BIN_DIR}" $@
