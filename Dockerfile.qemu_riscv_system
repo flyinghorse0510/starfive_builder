@@ -1,0 +1,16 @@
+FROM flyinghorse0510/qemu-gem5-builder:latest as qemu_builder
+
+# Specify QEMU source directory
+ARG qemu_code_path="./src/qemu"
+# Specify threads number used for build (default to use all threads)
+ARG num_threads=''
+# Copy QEMU source code
+WORKDIR /starfive/code
+COPY ${qemu_code_path} qemu
+RUN mkdir -p qemu/build
+
+# Build qemu-riscv64 system emulator && user space emulator (dynamically linked)
+WORKDIR /starfive/code/qemu/build
+RUN ../configure --enable-slirp --target-list=riscv64-softmmu,riscv64-linux-user
+RUN make -j ${num_threads}
+
