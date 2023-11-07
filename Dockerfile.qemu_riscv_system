@@ -1,9 +1,13 @@
-FROM flyinghorse0510/qemu-gem5-builder:latest as qemu_builder
-
 # Specify QEMU source directory
-ARG qemu_code_path="./src/qemu"
+ARG qemu_code_path="src/qemu"
 # Specify threads number used for build (default to use all threads)
 ARG num_threads=''
+
+FROM flyinghorse0510/qemu-gem5-builder:latest as qemu_builder
+
+ARG qemu_code_path
+ARG num_threads
+
 # Copy QEMU source code
 WORKDIR /starfive/code
 COPY ${qemu_code_path} qemu

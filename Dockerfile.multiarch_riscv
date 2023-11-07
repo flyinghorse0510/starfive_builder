@@ -1,13 +1,15 @@
-
+# Specify QEMU source directory
 ARG qemu_code_path="./src/qemu"
+# Specify threads number used for build (default to use all threads)
 ARG num_threads=''
+# Specify script directory
 ARG script_path="./scripts"
 
 FROM flyinghorse0510/qemu-gem5-builder:latest as qemu_builder
-# Specify QEMU source directory
+
 ARG qemu_code_path
-# Specify threads number used for build (default to use all threads)
 ARG num_threads
+
 # Copy QEMU source code
 WORKDIR /starfive/code
 COPY ${qemu_code_path} qemu
@@ -20,7 +22,7 @@ RUN make -j ${num_threads}
 
 
 FROM ubuntu:latest
-# Specify QEMU source directory
+
 ARG qemu_code_path
 ARG script_path
 
@@ -28,7 +30,7 @@ COPY --from=qemu_builder /starfive/code/qemu/build/qemu-riscv64 /usr/bin/qemu-ri
 # Copy binfmt_misc.sh script from QEMU source
 COPY ${qemu_code_path}/scripts/qemu-binfmt-conf-riscv64.sh /usr/bin/qemu-binfmt-conf-riscv64
 COPY ${script_path}/register_binfmt.sh /usr/bin/register_binfmt
-RUN chmod +x /usr/bin/qemu-binfmt-conf-riscv64 && chmod +x register_binfmt
+RUN chmod +x /usr/bin/qemu-binfmt-conf-riscv64 && chmod +x /usr/bin/register_binfmt
 ENTRYPOINT register_binfmt
 
 
