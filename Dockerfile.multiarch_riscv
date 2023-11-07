@@ -31,6 +31,6 @@ COPY --from=qemu_builder /starfive/code/qemu/build/qemu-riscv64 /usr/bin/qemu-ri
 COPY ${qemu_code_path}/scripts/qemu-binfmt-conf-riscv64.sh /usr/bin/qemu-binfmt-conf-riscv64
 COPY ${script_path}/register_binfmt.sh /usr/bin/register_binfmt
 RUN chmod +x /usr/bin/qemu-binfmt-conf-riscv64 && chmod +x /usr/bin/register_binfmt
-ENTRYPOINT register_binfmt
+ENTRYPOINT [ "/usr/bin/register_binfmt" ]
 
 
