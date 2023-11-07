@@ -21,7 +21,7 @@ RUN ../configure --target-list=riscv64-linux-user --static --disable-tools
 RUN make -j ${num_threads}
 
 
-FROM ubuntu:latest
+FROM ubuntu:22.04
 
 ARG qemu_code_path
 ARG script_path
