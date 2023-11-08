@@ -5,7 +5,7 @@ FROM flyinghorse0510/starfive-ubuntu:22.04
 
 ARG script_path
 
-ENV BUILD_DEPS="cmake build-essential gcc g++ make gettext"
+ENV BUILD_DEPS="cmake build-essential gcc g++ make gettext libx11-dev xserver-xorg-dev xorg-dev m4 x11proto-xext-dev libglu1-mesa-dev libxi-dev libxmu-dev libtbb-dev"
 ENV SYS_UTILS="git git-lfs python3 python3-dev python-is-python3 tmux curl vim nano openssh-server rsync"
 
 # Install system utilities and dependencies for building PARSEC3
@@ -18,4 +18,4 @@ COPY ${script_path}/build_parsec3.sh /usr/bin/build_parsec3
 RUN chmod +x /usr/bin/build_parsec3 && mkdir -p /parsec3
 
 # Provide entrypoint to build parsec3 automatically
-ENTRYPOINT build_parsec3
+ENTRYPOINT [ "/usr/bin/build_parsec3" ]
