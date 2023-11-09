@@ -26,15 +26,22 @@ echo "build target"
 for benchmark in "${benchmarkList[@]}"
 do
     echo "building ${benchmark}"
+    sleep 2
     if [ "${benchmark}" = "raytrace" ]; then
-        # raytrace doesn't support static link, use standalone build configuration
-        cp config/gcc-raytrace.bldconf config/gcc.bldconf
+        # raytrace static link needs some extra porting work for cmake, currently using some dirty trick
+        unlink /usr/bin/g++
+        unlink /usr/bin/gcc
+        ln -s /usr/bin/evil_g++ /usr/bin/g++
+        ln -s /usr/bin/evil_gcc /usr/bin/gcc
     else
-        cp config/gcc-common.bldconf config/gcc.bldconf
+        unlink /usr/bin/g++
+        unlink /usr/bin/gcc
+        ln -s /usr/bin/g++-11 /usr/bin/g++
+        ln -s /usr/bin/gcc-11 /usr/bin/gcc
     fi
     export BENCHMARKS="${benchmark}"
     # Redirect stdout to clear the output
-    ./bin/build > "${benchmark}.build_log"
+    ./bin/build | tee "${benchmark}.build_log"
 done
 
 # Create output directory

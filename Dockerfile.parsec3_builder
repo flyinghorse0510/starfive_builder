@@ -5,7 +5,9 @@ FROM flyinghorse0510/starfive-ubuntu:22.04
 
 ARG script_path
 
-ENV BUILD_DEPS="cmake build-essential gcc g++ make gettext libx11-dev xserver-xorg-dev xorg-dev m4 x11proto-xext-dev libglu1-mesa-dev libxi-dev libxmu-dev libtbb-dev"
+ENV BUILD_DEPS="cmake build-essential gcc g++ make gettext libx11-dev xserver-xorg-dev xorg-dev m4 x11proto-xext-dev \
+libglu1-mesa-dev libxi-dev libxmu-dev libtbb-dev libxcb1-dev libxau-dev libxdmcp-dev"
+
 ENV SYS_UTILS="git git-lfs python3 python3-dev python-is-python3 tmux curl vim nano openssh-server rsync"
 
 # Install system utilities and dependencies for building PARSEC3
@@ -13,9 +15,11 @@ RUN apt update && apt upgrade -y && apt install -y ${SYS_UTILS} && apt install -
 
 # Add parsec3 build helper script
 COPY ${script_path}/build_parsec3.sh /usr/bin/build_parsec3
+COPY ${script_path}/evil_g++.sh /usr/bin/evil_g++
+COPY ${script_path}/evil_gcc.sh /usr/bin/evil_gcc
 
-# Grant permission and create parsec3 source mount point
-RUN chmod +x /usr/bin/build_parsec3 && mkdir -p /parsec3
+# Grant permission to scripts and create parsec3 source mount point
+RUN chmod +x /usr/bin/build_parsec3 && chmod +x /usr/bin/evil_g++ && chmod +x /usr/bin/evil_gcc &&  mkdir -p /parsec3
 
 # Provide entrypoint to build parsec3 automatically
 ENTRYPOINT [ "/usr/bin/build_parsec3" ]
