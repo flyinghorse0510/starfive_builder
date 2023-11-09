@@ -3,3 +3,6 @@ parsec3
 .DS_Store
 images
 logs
+*.tar.gz
+amd64
+riscv64
