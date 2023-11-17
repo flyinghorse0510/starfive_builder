@@ -1,0 +1,15 @@
+ARG ubuntu_version="ubuntu:22.04"
+ARG openblas_version="0.3.25"
+
+FROM ${ubuntu_version}
+
+ARG openblas_version
+
+RUN DEBIAN_FRONTEND=noninteractive apt update && DEBIAN_FRONTEND=noninteractive apt install -y -qq build-essential make cmake gcc g++ gfortran git wget tmux python3 python-is-python3
+WORKDIR /home/starfive
+
+RUN wget https://github.com/OpenMathLib/OpenBLAS/releases/download/v${openblas_version}/OpenBLAS-${openblas_version}.tar.gz
+RUN rm -rf OpenBLAS-${openblas_version} && tar -xzf OpenBLAS-${openblas_version}.tar.gz
+
+WORKDIR /home/starfive/OpenBLAS-${openblas_version}
+RUN make -j && make lapack-test
