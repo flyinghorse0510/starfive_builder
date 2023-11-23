@@ -1,0 +1,16 @@
+ARG ubuntu_version="ubuntu:22.04"
+ARG openmpi_full_version="5.0.0"
+ARG openmpi_major_version="5.0"
+
+FROM ${ubuntu_version}
+
+ARG openmpi_full_version
+ARG openmpi_major_version
+
+RUN DEBIAN_FRONTEND=noninteractive apt update && DEBIAN_FRONTEND=noninteractive apt install -y -qq build-essential make cmake gcc g++ gfortran git wget tmux python3 python-is-python3 libevent-dev libpmix-dev
+WORKDIR /home/starfive
+
+RUN wget https://download.open-mpi.org/release/open-mpi/v${openmpi_major_version}/openmpi-${openmpi_full_version}.tar.gz && tar -xzf openmpi-${openmpi_full_version}.tar.gz 
+WORKDIR /home/starfive/openmpi-${openmpi_full_version}
+
+RUN ./configure --enable-static --prefix=/opt/openmpi && make -j all && make install

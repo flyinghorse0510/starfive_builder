@@ -1,0 +1,16 @@
+ARG ubuntu_version="ubuntu:22.04"
+ARG hpl_version="2.3"
+
+FROM flyinghorse0510/openblas-builder as openblas
+FROM flyinghorse0510/openmpi-builder as openmpi
+
+FROM ${ubuntu_version}
+
+ARG hpl_version
+
+WORKDIR /home/starfive
+RUN DEBIAN_FRONTEND=noninteractive apt update && DEBIAN_FRONTEND=noninteractive apt install -y -qq build-essential make cmake gcc g++ gfortran git wget tmux python3 python-is-python3
+
+RUN wget https://github.com/OpenMathLib/OpenBLAS/releases/download/v${openblas_version}/OpenBLAS-${openblas_version}.tar.gz
+
+ 

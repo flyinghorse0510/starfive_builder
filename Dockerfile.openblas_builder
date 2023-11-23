@@ -12,4 +12,4 @@ RUN wget https://github.com/OpenMathLib/OpenBLAS/releases/download/v${openblas_v
 RUN rm -rf OpenBLAS-${openblas_version} && tar -xzf OpenBLAS-${openblas_version}.tar.gz
 
 WORKDIR /home/starfive/OpenBLAS-${openblas_version}
-RUN make -j && make lapack-test
+RUN make -j && make lapack-test && make PREFIX=/opt/openblas install
