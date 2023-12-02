@@ -1,0 +1,21 @@
+ARG openblas_version="0.3.25"
+ARG ubuntu_version="flyinghorse0510/starfive-ubuntu"
+
+FROM flyinghorse0510/python3.10 as embedded_python
+FROM flyinghorse0510/openblas as openblas_binary
+
+FROM scratch as openblas_collection
+ARG openblas_version
+COPY --from=embedded_python /opt/python3.10 /python3.10
+COPY --from=openblas_binary /opt/openblas /openblas
+COPY --from=openblas_binary /home/starfive/OpenBLAS-${openblas_version}/lapack-netlib/BLAS/TESTING /blas_test/blas
+COPY --from=openblas_binary /home/starfive/OpenBLAS-${openblas_version}/lapack-netlib/INSTALL /blas_test/lapack_single
+COPY --from=openblas_binary /home/starfive/OpenBLAS-${openblas_version}/lapack-netlib/TESTING /blas_test/lapack_multi/test
+COPY --from=openblas_binary /home/starfive/OpenBLAS-${openblas_version}/lapack-netlib/lapack_testing.py /blas_test/lapack_multi/lapack_testing.py
+COPY scripts/verify_blas.sh /
+
+ARG ubuntu_version
+FROM ${ubuntu_version}
+COPY --from=openblas_collection / /opt
+WORKDIR /opt
+RUN chmod +x verify_blas.sh

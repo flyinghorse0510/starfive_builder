@@ -1,4 +1,4 @@
-ARG ubuntu_version="ubuntu:22.04"
+ARG ubuntu_version="flyinghorse0510/starfive-ubuntu"
 ARG openblas_version="0.3.25"
 
 FROM ${ubuntu_version}
@@ -12,4 +12,11 @@ RUN wget https://github.com/OpenMathLib/OpenBLAS/releases/download/v${openblas_v
 RUN rm -rf OpenBLAS-${openblas_version} && tar -xzf OpenBLAS-${openblas_version}.tar.gz
 
 WORKDIR /home/starfive/OpenBLAS-${openblas_version}
-RUN make -j && make lapack-test && make PREFIX=/opt/openblas install
+RUN make -j
+RUN echo "LDFLAGS+=-static" >> lapack-netlib/make.inc \
+    && CROSS=1 make lapack-test \
+    && cd /home/starfive/OpenBLAS-${openblas_version}/lapack-netlib/BLAS/TESTING \
+    && make -j \
+    && cd /home/starfive/OpenBLAS-${openblas_version}/lapack-netlib/INSTALL \
+    && make -j
+RUN make PREFIX=/opt/openblas install 

@@ -1,4 +1,4 @@
-ARG ubuntu_version="ubuntu:22.04"
+ARG ubuntu_version="flyinghorse0510/starfive-ubuntu"
 ARG openmpi_full_version="5.0.0"
 ARG openmpi_major_version="5.0"
 
