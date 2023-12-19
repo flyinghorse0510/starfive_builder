@@ -15,9 +15,9 @@ WORKDIR /starfive/code
 COPY ${qemu_code_path} qemu
 RUN mkdir -p qemu/build
 
-# Build qemu-riscv64 linux user space emulator
+# Build qemu-riscv64 and qemu-aarch64 linux user space emulator
 WORKDIR /starfive/code/qemu/build
-RUN ../configure --target-list=riscv64-linux-user --static --disable-tools
+RUN ../configure --target-list=riscv64-linux-user,aarch64-linux-user --static --disable-tools
 RUN make -j ${num_threads}
 
 
@@ -27,10 +27,11 @@ ARG qemu_code_path
 ARG script_path
 
 COPY --from=qemu_builder /starfive/code/qemu/build/qemu-riscv64 /usr/bin/qemu-riscv64-static
+COPY --from=qemu_builder /starfive/code/qemu/build/qemu-aarch64 /usr/bin/qemu-aarch64-static
 # Copy binfmt_misc.sh script from QEMU source
-COPY ${qemu_code_path}/scripts/qemu-binfmt-conf-riscv64.sh /usr/bin/qemu-binfmt-conf-riscv64
+COPY ${qemu_code_path}/scripts/qemu-binfmt-conf-starfive.sh /usr/bin/qemu-binfmt-conf-starfive
 COPY ${script_path}/register_binfmt.sh /usr/bin/register_binfmt
-RUN chmod +x /usr/bin/qemu-binfmt-conf-riscv64 && chmod +x /usr/bin/register_binfmt
+RUN chmod +x /usr/bin/qemu-binfmt-conf-starfive && chmod +x /usr/bin/register_binfmt
 ENTRYPOINT [ "/usr/bin/register_binfmt" ]
 
 

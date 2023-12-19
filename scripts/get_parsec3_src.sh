@@ -8,3 +8,5 @@ git clone https://github.com/flyinghorse0510/parsec-starfive.git --depth 1 --rec
 cd src/parsec3 || exit
 git lfs pull
 
+# get inputs
+./get-inputs
