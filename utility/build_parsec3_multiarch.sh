@@ -17,10 +17,10 @@ archList=("amd64" "arm64" "riscv64")
 
 for arch in "${archList[@]}"
 do
-    docker run --rm -it -v src/parsec3:/parsec3 -v ./parsec3_multiarch/${arch}:/output ${repoPrefix}:${version}
+    docker run --rm -it -v ./src/parsec3:/parsec3 -v ./parsec3_multiarch/${arch}:/output ${repoPrefix}:${version} all
 done
 
 echo "Archiving parsec3 multiarch images..."
-tar -czf parsec3_multiarch_v2.tar.gz parsec3_multiarch
+tar -czf parsec3_images_multiarch_${version}.tar.gz parsec3_multiarch
 
 popd || exit
