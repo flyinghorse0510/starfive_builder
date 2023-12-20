@@ -9,7 +9,7 @@ ENV BUILD_DEPS="pkg-config build-essential gdb lcov pkg-config libbz2-dev libffi
 liblzma-dev libncurses5-dev libreadline6-dev libsqlite3-dev libssl-dev lzma lzma-dev tk-dev uuid-dev zlib1g-dev \
 gcc g++ make cmake git git-lfs"
 
-RUN DEBIAN_FRONTEND=noninteractive apt update && DEBIAN_FRONTEND=noninteractive apt install -y -qq ${BUILD_DEPS}
+RUN DEBIAN_FRONTEND=noninteractive apt update && DEBIAN_FRONTEND=noninteractive apt upgrade -y -qq && DEBIAN_FRONTEND=noninteractive apt install -y -qq ${BUILD_DEPS}
 
 WORKDIR /home/starfive/
 RUN git clone https://github.com/python/cpython.git

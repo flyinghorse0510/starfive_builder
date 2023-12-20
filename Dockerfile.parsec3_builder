@@ -11,7 +11,7 @@ libglu1-mesa-dev libxi-dev libxmu-dev libtbb-dev libxcb1-dev libxau-dev libxdmcp
 ENV SYS_UTILS="git git-lfs python3 python3-dev python-is-python3 tmux curl vim nano openssh-server rsync"
 
 # Install system utilities and dependencies for building PARSEC3
-RUN apt update && apt upgrade -y && apt install -y ${SYS_UTILS} && apt install -y ${BUILD_DEPS}
+RUN DEBIAN_FRONTEND=noninteractive apt update && DEBIAN_FRONTEND=noninteractive apt upgrade -y -qq && DEBIAN_FRONTEND=noninteractive apt install -y -qq ${SYS_UTILS} && DEBIAN_FRONTEND=noninteractive apt install -y -qq ${BUILD_DEPS}
 
 # Add parsec3 build helper script
 COPY ${script_path}/build_parsec3.sh /usr/bin/build_parsec3

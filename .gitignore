@@ -6,3 +6,5 @@ logs
 *.tar.gz
 amd64
 riscv64
+arm64
+parsec3_multiarch
